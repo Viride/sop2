@@ -11,6 +11,12 @@
 #define POKOJ 3
 #define KARTA 4
 #define KARTA_ODP 5
+#define LICYTACJA 6
+#define LICYTACJA_ODP 7
+#define LICYTACJA0 8
+#define LICYTACJA1 9
+#define LICYTACJA2 10
+/// na 31000 komunikacja
 /// na 31000 komunikacja poczatkowa
 
 struct  buf_elem{
@@ -84,7 +90,7 @@ printf("%d\n", buf_e->mvalue);
 ///-------------------------------------------------------------------------------
 char **karty;
     karty=malloc((8+1)*sizeof(*karty));
-    for(p=0;p<8+1;++p){ *(karty+p)=malloc(4*sizeof(**karty));}
+    for(y=0;y<8+1;++y){ *(karty+y)=malloc(4*sizeof(**karty));}
 
 for(y=0;y<8;y++){
 msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),KARTA, 0);
@@ -94,5 +100,71 @@ buf_e->mtype=KARTA_ODP;
 buf_e->mvalue=1;
 msgsnd(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)), 0);
 
+for(y=0;y<8;y++){
+    printf("%d\t", y);
+}
+printf("\n");
+for(y=0;y<8;y++){
+    printf("%s\t", karty[y]);
+}
 
+///-------------------------------------------------------------------------------
+///LICYTACJA
+///-------------------------------------------------------------------------------
+int numer=5;
+int licyt_done=0;
+int licyt=0;
+
+msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA, 0);
+numer=buf_e->mvalue;
+
+if(numer==0) {
+        strcpy(buf2_e->mvalue,login);
+        buf2_e->mtype=LICYTACJA0;
+        msgsnd(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)), 0);}
+else {
+        if(numer==1){
+            strcpy(buf2_e->mvalue,login);
+            buf2_e->mtype=LICYTACJA1;
+            msgsnd(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)), 0);}
+
+        else {
+            if(numer==3){
+                strcpy(buf2_e->mvalue,login);
+                buf2_e->mtype=LICYTACJA2;
+                msgsnd(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)), 0);}
+        }}
+
+while(licyt_done==0){
+
+if(numer==0) {
+        msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA0, 0);
+        scanf("%d\n", &licyt);
+        buf_e->mtype=LICYTACJA0;
+        buf_e->mvalue=licyt;
+        msgsnd(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)), 0);}
+else {
+        if(numer==1){
+            msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA1, 0);
+            scanf("%d\n", &licyt);
+            buf_e->mtype=LICYTACJA1;
+            buf_e->mvalue=licyt;
+            msgsnd(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)), 0);}
+
+        else {
+            if(numer==3){
+                msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA2, 0);
+                scanf("%d\n", &licyt);
+                buf_e->mtype=LICYTACJA2;
+                buf_e->mvalue=licyt;
+                msgsnd(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)), 0);}
+        }}
+msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA, 0);
+licyt_done=buf_e->mvalue;
+}
+
+
+
+printf("\nKoniec!\n");
+exit(0);
 }
