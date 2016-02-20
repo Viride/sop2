@@ -6,7 +6,7 @@
 #include <sys/msg.h>
 #include <fcntl.h>
 
-#define REJ 1       ///gracze zglaszaja sie serwerowi
+#define REJ 1
 #define REJE 2
 #define POKOJ 3
 #define KARTA 4
@@ -14,8 +14,11 @@
 #define LICYTACJA 6
 #define LICYTACJA_ODP 7
 #define LICYTACJA0 8
-#define LICYTACJA1 9
-#define LICYTACJA2 10
+#define LICYTACJA0_ODP 9
+#define LICYTACJA1 10
+#define LICYTACJA1_ODP 11
+#define LICYTACJA2 12
+#define LICYTACJA2_ODP 13
 /// na 31000 komunikacja poczatkowa
 /// na 31000 + a + 1 komunikacja pokoi
 
@@ -137,7 +140,7 @@ if(stolik[j].status==1){
     int x=0;
     for(x=0;x<3;x++){ /*4*/
         msgsnd(msgid, buf, (sizeof(struct buf_elem)-sizeof(long)), 0);
-        ///printf("Wyslalem: %d\n", x);
+        printf("Wyslalem: %d\n", x);
     }
 
     if(fork()==0){
@@ -164,7 +167,7 @@ int y=0;
 ///DEKLARACJE
 ///-------------------------------------------------------------------------------
 int msgid2[10];
-
+printf("Zaczynam gre: %d\n\n", a);
 ///-------------------------------------------------------------------------------
 ///TWORZENIE KOLEJEK
 ///-------------------------------------------------------------------------------
@@ -179,10 +182,11 @@ if (msgid2[a] ==  -1){
 ///-------------------------------------------------------------------------------
 buf_e[a].mtype=POKOJ;
 buf_e[a].mvalue=1;
+printf("Test1\n");
 for(y=0;y<3;y++){/*4*/
     buf_e[a].mvalue=y;
     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
-    ///printf("Wyruszyl: %d\n", y);
+    printf("Wyruszyl: %d\n", y);
 }
 ///-------------------------------------------------------------------------------
 ///PĘTLA DO GRY
@@ -207,17 +211,21 @@ printf("Koniec wysylania kart: %d\n", a);
 ///-------------------------------------------------------------------------------
 ///LICYTACJA
 ///-------------------------------------------------------------------------------
+
+printf("Rozpoczynam licytacje\n");
 int licznik=tura;
 for(y=0;y<3;y++){
     buf_e[a].mtype=LICYTACJA;
     buf_e[a].mvalue=y;
+    printf("%d\t", y);
     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
     }
-msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA0, 0);
+printf("\nCzekam na potwierdzenia\n");
+msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA0_ODP, 0);
 strcpy(stolik[a].gracz0, buf2_e[a].mvalue);
-msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA1, 0);
+msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA1_ODP, 0);
 strcpy(stolik[a].gracz1, buf2_e[a].mvalue);
-msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA2, 0);
+msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA2_ODP, 0);
 strcpy(stolik[a].gracz2, buf2_e[a].mvalue);
 
 
@@ -226,13 +234,15 @@ licyt[a].gracz1=-1; if(tura%3==1) licyt[a].gracz1=1;
 licyt[a].gracz2=-1; if(tura%3==2) licyt[a].gracz2=1;
 int lic_done=0;
 int max_licyt=1;
+printf("Start\n");
 while(lic_done!=1){
 
     if(licznik%3==0){
         buf_e[a].mtype=LICYTACJA0;
         buf_e[a].mvalue=max_licyt;
         msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
-        msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),LICYTACJA0, 0);
+        msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),LICYTACJA0_ODP, 0);
+        printf("Odebrałem gracz0\n");
         licyt[a].gracz0=buf_e[a].mvalue;
         if(licyt[a].gracz0>max_licyt) max_licyt=licyt[a].gracz0;
         licznik++;
@@ -242,7 +252,8 @@ while(lic_done!=1){
         buf_e[a].mtype=LICYTACJA1;
         buf_e[a].mvalue=max_licyt;
         msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
-        msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),LICYTACJA1, 0);
+        msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),LICYTACJA1_ODP, 0);
+        printf("Odebrałem gracz1\n");
         licyt[a].gracz1=buf_e[a].mvalue;
         if(licyt[a].gracz1>max_licyt) max_licyt=licyt[a].gracz1;
         licznik++;
@@ -252,7 +263,8 @@ while(lic_done!=1){
         buf_e[a].mtype=LICYTACJA2;
         buf_e[a].mvalue=max_licyt;
         msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
-        msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),LICYTACJA2, 0);
+        msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),LICYTACJA2_ODP, 0);
+        printf("Odebrałem gracz2\n");
         licyt[a].gracz1=buf_e[a].mvalue;
         if(licyt[a].gracz2>max_licyt) max_licyt=licyt[a].gracz2;
         licznik++;
