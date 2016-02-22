@@ -431,6 +431,23 @@ while(rozdanie<3){
         while(karty<4){
             if(tura_karty%3==0){
                     buf_e[a].mtype=GRA0;
+                    buf_e[a].mvalue=karty;
+                    msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
+                    printf("Karty: %d\n", karty);
+                    if(karty==2){
+                        buf2_e[a].mtype=GRA0;
+                        strcpy(buf2_e[a].mvalue, karta2);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                    }
+                    if(karty==3){
+                        buf2_e[a].mtype=GRA0;
+                        strcpy(buf2_e[a].mvalue, karta1);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                        buf2_e[a].mtype=GRA0;
+                        strcpy(buf2_e[a].mvalue, karta2);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                    }
+                    buf_e[a].mtype=GRA0;
                     buf_e[a].mvalue=0;
                     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
                     msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),GRA0_ODP, 0);
@@ -439,6 +456,23 @@ while(rozdanie<3){
             }
             if(tura_karty%3==1){
                     buf_e[a].mtype=GRA1;
+                    buf_e[a].mvalue=karty;
+                    msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
+                    printf("Karty: %d\n", karty);
+                    if(karty==2){
+                        buf2_e[a].mtype=GRA1;
+                        strcpy(buf2_e[a].mvalue, karta0);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                    }
+                    if(karty==3){
+                        buf2_e[a].mtype=GRA1;
+                        strcpy(buf2_e[a].mvalue, karta2);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                        buf2_e[a].mtype=GRA1;
+                        strcpy(buf2_e[a].mvalue, karta0);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                    }
+                    buf_e[a].mtype=GRA1;
                     buf_e[a].mvalue=0;
                     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
                     msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),GRA1_ODP, 0);
@@ -446,6 +480,23 @@ while(rozdanie<3){
                     //printf("Dostalem karte od %d\n", tura_karty);
             }
             if(tura_karty%3==2){
+                    buf_e[a].mtype=GRA2;
+                    buf_e[a].mvalue=karty;
+                    printf("Karty: %d\n", karty);
+                    msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
+                    if(karty==2){
+                        buf2_e[a].mtype=GRA2;
+                        strcpy(buf2_e[a].mvalue, karta1);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                    }
+                    if(karty==3){
+                        buf2_e[a].mtype=GRA2;
+                        strcpy(buf2_e[a].mvalue, karta0);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                        buf2_e[a].mtype=GRA2;
+                        strcpy(buf2_e[a].mvalue, karta1);
+                        msgsnd(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)), 0);
+                    }
                     buf_e[a].mtype=GRA2;
                     buf_e[a].mvalue=0;
                     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);

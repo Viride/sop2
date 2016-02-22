@@ -231,6 +231,9 @@ char **karty;
     printf("Rozpoczynamy grę\n");
     int kolejka=1;
     int nr_karty;
+    int ile_kart;
+    char karta0[4];
+    char karta1[4];
     msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA, 0);
 
     while(kolejka<9){
@@ -239,6 +242,20 @@ char **karty;
         msgsnd(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)), 0);
         //printf("Wysłałem komunikat, pocz. while\n");
         if(numer==0) {
+                msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA0, 0);
+                ile_kart=buf_e->mvalue;
+                if(ile_kart==2){
+                    msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA0, 0);
+                    strcpy(karta0, buf2_e->mvalue);
+                    printf("Karty na stole:\n %s\n", karta0);
+                }
+                 if(ile_kart==3){
+                    msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA0, 0);
+                    strcpy(karta0, buf2_e->mvalue);
+                    msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA0, 0);
+                    strcpy(karta1, buf2_e->mvalue);
+                    printf("Karty na stole:\n %s\t %s\n", karta0, karta1);
+                }
                 msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA0, 0);
                 for(y=0;y<8;y++) printf("%d\t", y);
                 printf("\n");
@@ -255,6 +272,20 @@ char **karty;
         else {
                 if(numer==1){
                     msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA1, 0);
+                        ile_kart=buf_e->mvalue;
+                    if(ile_kart==2){
+                        msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA1, 0);
+                        strcpy(karta0, buf2_e->mvalue);
+                        printf("Karty na stole:\n %s\n", karta0);
+                    }
+                     if(ile_kart==3){
+                        msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA1, 0);
+                        strcpy(karta0, buf2_e->mvalue);
+                        msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA1, 0);
+                        strcpy(karta1, buf2_e->mvalue);
+                        printf("Karty na stole:\n %s\t %s\n", karta0, karta1);
+                        }
+                    msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA1, 0);
                     for(y=0;y<8;y++) printf("%d\t", y);
                     printf("\n");
                     for(y=0;y<8;y++) printf("%s\t", karty[y]);
@@ -270,6 +301,20 @@ char **karty;
 
                 else {
                     if(numer==2){
+                        msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA2, 0);
+                        ile_kart=buf_e->mvalue;
+                        if(ile_kart==2){
+                            msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA2, 0);
+                            strcpy(karta0, buf2_e->mvalue);
+                            printf("Karty na stole:\n %s\n", karta0);
+                        }
+                         if(ile_kart==3){
+                            msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA2, 0);
+                            strcpy(karta0, buf2_e->mvalue);
+                            msgrcv(msgid2, buf2_e, (sizeof(struct buf2_el)-sizeof(long)),GRA2, 0);
+                            strcpy(karta1, buf2_e->mvalue);
+                            printf("Karty na stole:\n %s\t %s\n", karta0, karta1);
+                        }
                         msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),GRA2, 0);
                         for(y=0;y<8;y++) printf("%d\t", y);
                         printf("\n");
