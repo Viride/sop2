@@ -298,7 +298,6 @@ while(rozdanie<3){
     msgrcv(msgid2[a], &buf2_e[a], (sizeof(struct buf2_el)-sizeof(long)),LICYTACJA2_ODP, 0);
     strcpy(stolik[a].gracz2, buf2_e[a].mvalue);
 
-
     licyt[a].gracz0=-1; if(tura%3==0) licyt[a].gracz0=1;
     licyt[a].gracz1=-1; if(tura%3==1) licyt[a].gracz1=1;
     licyt[a].gracz2=-1; if(tura%3==2) licyt[a].gracz2=1;

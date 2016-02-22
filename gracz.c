@@ -107,7 +107,7 @@ msgid2 = msgget (31000+a+1 , IPC_CREAT|0660);
 
 msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),POKOJ, 0);
 printf("%d\n", buf_e->mvalue);
-
+int numer=5;
 ///-------------------------------------------------------------------------------
 ///PRZYJECIE KART
 ///-------------------------------------------------------------------------------
@@ -138,13 +138,13 @@ char **karty;
 ///-------------------------------------------------------------------------------
 ///LICYTACJA
 ///-------------------------------------------------------------------------------
-    int numer=5;
+
     int licyt_done=0;
     int licyt=-1;
 
     //printf("Czekam na rozpoczecie licytacji\n");
     msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA, 0);
-    numer=buf_e->mvalue;
+    if (rozdanie==1) numer=buf_e->mvalue;
     printf("Moj numer to: %d\n", numer);
     //printf("Wysyłam potwiedzenie\n");
     if(numer==0) {
