@@ -33,6 +33,9 @@
 #define LICYTACJA_WYNIK1_ODP 24
 #define GRA_POCZ 25
 #define GRA_KON 26
+#define WYNIKI0 27
+#define WYNIKI1 28
+#define WYNIKI2 29
 /// na 31000 komunikacja poczatkowa
 /// na 31000 + a + 1 komunikacja pokoi
 
@@ -425,14 +428,14 @@ while(rozdanie<3){
             msgrcv(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)),GRA_POCZ, 0);
         }
         //printf("Odebrałem komunikaty, pocz. while\n");
-        printf("Rozdanie zacznie: %d\n", zm_pom);
+        //printf("Rozdanie zacznie: %d\n", zm_pom);
         karty=1;
         while(karty<4){
             if(tura_karty%3==0){
                     buf_e[a].mtype=GRA0;
                     buf_e[a].mvalue=karty;
                     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
-                    printf("Karty: %d\n", karty);
+                    //printf("Karty: %d\n", karty);
                     if(karty==2){
                         buf2_e[a].mtype=GRA0;
                         strcpy(buf2_e[a].mvalue, karta2);
@@ -457,7 +460,7 @@ while(rozdanie<3){
                     buf_e[a].mtype=GRA1;
                     buf_e[a].mvalue=karty;
                     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
-                    printf("Karty: %d\n", karty);
+                    //printf("Karty: %d\n", karty);
                     if(karty==2){
                         buf2_e[a].mtype=GRA1;
                         strcpy(buf2_e[a].mvalue, karta0);
@@ -481,7 +484,7 @@ while(rozdanie<3){
             if(tura_karty%3==2){
                     buf_e[a].mtype=GRA2;
                     buf_e[a].mvalue=karty;
-                    printf("Karty: %d\n", karty);
+                    //printf("Karty: %d\n", karty);
                     msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
                     if(karty==2){
                         buf2_e[a].mtype=GRA2;
@@ -529,7 +532,21 @@ while(rozdanie<3){
     else printf("Gracz %d nie ugrał deklarowanej ilości bitek\n", wygral_licyt);
     rozdanie++;
 }
-
+for(y=0;y<3;y++){
+    buf_e[a].mtype=WYNIKI0;
+    buf_e[a].mvalue=stolik[a].gracz0_win;
+    msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
+}
+for(y=0;y<3;y++){
+    buf_e[a].mtype=WYNIKI1;
+    buf_e[a].mvalue=stolik[a].gracz1_win;
+    msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
+}
+for(y=0;y<3;y++){
+    buf_e[a].mtype=WYNIKI2;
+    buf_e[a].mvalue=stolik[a].gracz2_win;
+    msgsnd(msgid2[a], &buf_e[a], (sizeof(struct buf_el)-sizeof(long)), 0);
+}
 /// Miejsce na wysłanie wyników
 free(talia);
 exit(0);

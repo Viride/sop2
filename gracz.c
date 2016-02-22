@@ -33,6 +33,9 @@
 #define LICYTACJA_WYNIK1_ODP 24
 #define GRA_POCZ 25
 #define GRA_KON 26
+#define WYNIKI0 27
+#define WYNIKI1 28
+#define WYNIKI2 29
 /// na 31000 komunikacja
 /// na 31000 komunikacja poczatkowa
 
@@ -172,6 +175,7 @@ char **karty;
 
     if(numer==0 && licyt!=0) {
             msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA0, 0);
+            printf("Obecna największa licytacja: %d\n", buf_e->mvalue);
             printf("Podaj ile licytujesz: "); scanf("%d", &licyt);
             buf_e->mtype=LICYTACJA0_ODP;
             buf_e->mvalue=licyt;
@@ -181,6 +185,7 @@ char **karty;
     else {
             if(numer==1 && licyt!=0){
                 msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA1, 0);
+                printf("Obecna największa licytacja: %d\n", buf_e->mvalue);
                 printf("Podaj ile licytujesz: "); scanf("%d", &licyt);
                 buf_e->mtype=LICYTACJA1_ODP;
                 buf_e->mvalue=licyt;
@@ -191,6 +196,7 @@ char **karty;
             else {
                 if(numer==2 && licyt!=0){
                     msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),LICYTACJA2, 0);
+                    printf("Obecna największa licytacja: %d\n", buf_e->mvalue);
                     printf("Podaj ile licytujesz: "); scanf("%d", &licyt);
                     buf_e->mtype=LICYTACJA2_ODP;
                     buf_e->mvalue=licyt;
@@ -339,6 +345,17 @@ char **karty;
     rozdanie++;
     free(karty);
 }
+int wyniki[3];
+msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),WYNIKI0, 0);
+wyniki[0]=buf_e->mvalue;
+msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),WYNIKI1, 0);
+wyniki[1]=buf_e->mvalue;
+msgrcv(msgid2, buf_e, (sizeof(struct buf_el)-sizeof(long)),WYNIKI2, 0);
+wyniki[2]=buf_e->mvalue;
+
+printf("Wyniki:\n");
+printf("Gracz0: %d\nGracz1: %d\nGracz2: %d\n", wyniki[0], wyniki[1], wyniki[2] );
+
 
 printf("\nKoniec!\n");
 exit(0);
