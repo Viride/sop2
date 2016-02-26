@@ -1,0 +1,17 @@
+Projekt zosta³ zrealizowany za pomoc¹ kolejek komunikatów. G³ówna struktura stolik
+przechowuje dane o graczach i wynikach. Kolejki s¹ wykorzystywane do synchronizacji
+pomiêdzy serverem i graczami, a odpowiednie flagi zapewniaj¹, ¿e komunikaty zostan¹
+odebrane przez w³aœciwy fragment kodu. Dane takie jak karty, login przesy³ane s¹
+przygotowanym buforem z mvalue(char), a dane i synchonizacja buforem(int).
+Zmienna "a" zapewnia odwo³anie dla odpowiednich struktur kolejnym procesom, pozosta³e
+zmienne s¹ pomocnicze.
+
+Gra jest stworzona na podstawie Tysi¹ca. W grze jest 3 graczy, graj¹ 24 kartami liczy 
+siê tylko kolor wystawiany, nie ma meldunków. Karty s¹ reprezentowane poprzez 
+Ka/Ki/Pi/Tr i figurê, czyli 9/J/D/K/1/A, czyli Ki1 to dziesi¹tka kier. Przy licytacji 
+podajemy 0 gdy pasujemy, liczbê wiêksz¹ od podanej, gdy podbijamy stawkê lub t¹ sam¹ 
+co podana, aby j¹ potwierdziæ (pod warunkiem, ¿e to ten gracz wczeœniej j¹ zadeklarowa³)
+Gdy raz siê da pass, nie bierze siê udzia³u w licytacji w danym rozdaniu. Licytujemy 
+iloœci¹ lew, które deklarujemy, ¿e zabierzemy. Podczas wybierania kart nale¿y podaæ 
+jedn¹ z dostêpnych, wybranie wczeœniej u¿ytej mo¿e spowodowaæ nieoczekiwane 
+konsekwencje.
